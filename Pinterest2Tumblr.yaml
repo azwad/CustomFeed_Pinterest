@@ -1,0 +1,42 @@
+global:
+ timezone: Asia/Tokyo
+ user_agent:
+   cookies:
+     file: /home/toshi/.w3m/cookie
+     agent: w3m/0.5.2
+ cache:
+   base: /home/toshi/.plagger/cron/tmp
+ log:
+   level: debug 
+plugins:
+#INPUT
+ - module: CustomFeed::Pinterest
+   config:
+     urls:
+       - http://pinterest.com/maako/beautiful-women/
+       - http://pinterest.com/chocolatenao/lady/
+       - http://pinterest.com/mst47/beauty/
+       - http://pinterest.com/yayoi1/nude/
+       - http://pinterest.com/siriah/bodies/
+       - http://pinterest.com/avangarda2011/nude/
+     enclosure: 1
+
+ - module: Filter::FetchEnclosure
+   config:
+     dir: '/home/toshi/Dropbox/Camera Uploads/image'
+
+ - module: Filter::Rule
+   rule:
+     - expression: $args->{entry}->{date} = undef; 1
+     - module: Deduped
+
+#OUTPUT
+ - module: Publish::Tumblr
+   config:
+     pit_account: tumblr.azwad.com
+     type: photo
+     caption: 1
+     interval: 10
+     state: draft
+
+
