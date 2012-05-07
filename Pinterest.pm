@@ -29,7 +29,8 @@ sub aggregate {
 			my $pinlist = Pindata->new();
 			$context->log(info => "get pinlist $url");
 			my $result = $pinlist->get($url);
-			push (@pinlist, @{$result->{permalink}});
+			$context->log(info => $result->{err}) if $result->{err};
+			push (@pinlist, @{$result->{permalink}}) if $result->{permalink};
 		};
 
 		my $feed  = Plagger::Feed->new;
